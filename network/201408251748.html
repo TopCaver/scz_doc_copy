@@ -1,0 +1,79 @@
+<html>
+<pre>
+标题: Network系列(2)--链路层发包工具PACKETH简介
+
+创建: 2014-08-25 17:48
+更新: 2015-03-02 16:02
+链接: http://scz.617.cn/network/201408251748.html
+
+--------------------------------------------------------------------------
+
+目录:
+
+    ☆ PACKETH简介
+    ☆ 参考资源
+
+--------------------------------------------------------------------------
+
+☆ PACKETH简介
+
+逆向分析ZTE_MIPS_Home_Router时从内存里弄到一些数据，看上去是IP层数据包，想
+把它丢到Wireshark里解码看看，居然一时找不到简便办法，我现在比较懒，能用现
+成工具就不想写程序，据说这是人类进步的本源。后来找到PACKETH。
+
+PACKETH是一个GUI/CLI链路层数据包发送工具，允许你创建并发送任意链路层数据包。
+
+dstmac  00:06:07:08:09:0a
+srcmac  00:01:02:03:04:05
+type    0800
+payload
+
+45 00 00 3C 79 B2 40 00 40 06 C1 38 0A 00 02 0F
+41 3C 0E F6 91 E9 63 DD 00 00 00 00 00 00 00 00
+A0 02 FF FF B3 88 00 00 02 04 94 00 04 02 08 0A
+00 00 B3 9A 00 00 00 00 01 03 03 90
+
+以packEth1.6Win32.zip为例。双击packEth.exe，得到GUI界面。
+
+Link layer
+
+    选"Ver II"
+
+    清空802.1q复选框
+
+    填写dstmac、srcmac
+
+    选IPv4
+
+    选"User defined payload"
+
+User defined network payload
+
+    在这里填入IP层数据，形如:
+
+    45 00 00 3C 79 B2 40 00 40 06 C1 38 0A 00 02 0F
+    41 3C 0E F6 91 E9 63 DD 00 00 00 00 00 00 00 00
+    A0 02 FF FF B3 88 00 00 02 04 94 00 04 02 08 0A
+    00 00 B3 9A 00 00 00 00 01 03 03 90
+
+    此处有容错性，比如中间出现连续两个空格，各行开头出现多个空格等等
+
+Interface
+
+    选中用来发送链路层数据包的网卡
+
+点击"Send"，即可发送一次。同步用Wireshark抓包，可以看到解码效果。
+
+如果想循环发送多次，点击"Gen-b"，有很多配置项，还可以针对每次发送的报文自
+动进行某些修改，DoS时可能会用上。这个面板里"Packet contents"对应链路层报文，
+已将dstmac、srcmac、type与payload揉一起了。
+
+☆ 参考资源
+
+[1] PACKETH is GUI and CLI packet generator tool for ethernet
+    http://packeth.sourceforge.net/packeth/Home.html
+    http://sourceforge.net/projects/packeth/files/
+</pre>
+<img src="201408251748_0.jpg">
+<img src="201408251748_1.jpg">
+</html>
